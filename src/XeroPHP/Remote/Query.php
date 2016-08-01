@@ -42,7 +42,7 @@ class Query {
 
         return $this;
     }
-    
+
     /**
      * Adds a WHERE statment to the query. Can also be used to chain an AND WHERE statement to
      * a query.
@@ -52,7 +52,7 @@ class Query {
     public function where() {
         return $this->addWhere('AND', func_get_args());
     }
-    
+
     /**
      * Chains an OR WHERE statement on to the query
      *
@@ -61,7 +61,7 @@ class Query {
     public function orWhere() {
         return $this->addWhere('OR', func_get_args());
     }
-    
+
     /**
      * Chains an AND WHERE statement on to the query.
      * ( Note this method is effectively an alias for where() to help make fluent
@@ -72,7 +72,7 @@ class Query {
     public function andWhere() {
         return $this->addWhere('AND', func_get_args());
     }
-    
+
     /**
      * @return $this
      **/
@@ -90,7 +90,7 @@ class Query {
                 $this->where[] = sprintf('%s==%s', $args[0], $args[1]);
             } elseif(preg_match('/^(\'|")?(true|false)("|\')?$/i', $args[1])) {
                 $this->where[] = sprintf('%s=%s', $args[0], $args[1]);
-            } elseif(preg_match('/^([a-z]+)\.\1ID$/i', $args[0]) && preg_match('/^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$/i', $args[1])) {
+            } elseif(preg_match('/([a-z]+)\.\1ID$/i', $args[0]) && preg_match('/^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$/i', $args[1])) {
                 $this->where[] = sprintf('%s=Guid("%s")', $args[0], $args[1]);
             } else {
                 $this->where[] = sprintf('%s=="%s"', $args[0], $args[1]);
@@ -204,7 +204,7 @@ class Query {
 
         // Concatenate where statements
         $where = $this->getWhere();
-        
+
         if(!empty($where)) {
             $request->setParameter('where', $where);
         }
