@@ -35,6 +35,12 @@ class Allocation extends Remote\Object
      */
     public static function getResourceURI()
     {
+        return 'Overpayments';
+    }
+
+
+    public static function getSubResourceURI()
+    {
         return 'Allocations';
     }
 
@@ -57,7 +63,7 @@ class Allocation extends Remote\Object
      */
     public static function getGUIDProperty()
     {
-        return '';
+        return 'OverpaymentID';
     }
 
 
@@ -78,6 +84,7 @@ class Allocation extends Remote\Object
     public static function getSupportedMethods()
     {
         return array(
+            Remote\Request::METHOD_PUT
         );
     }
 
@@ -97,7 +104,8 @@ class Allocation extends Remote\Object
         return array(
             'Invoice' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Invoice', false, false),
             'AppliedAmount' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false),
-            'Date' => array (false, self::PROPERTY_TYPE_DATE, '\\DateTimeInterface', false, false)
+            'Date' => array (false, self::PROPERTY_TYPE_DATE, '\\DateTimeInterface', false, false),
+            'OverpaymentID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false)
         );
     }
 
@@ -160,6 +168,25 @@ class Allocation extends Remote\Object
     {
         $this->propertyUpdated('Date', $value);
         $this->_data['Date'] = $value;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOverpaymentID()
+    {
+        return $this->_data['OverpaymentID'];
+    }
+
+    /**
+     * @param string $value
+     * @return Allocation
+     */
+    public function setOverpaymentID($value)
+    {
+        $this->propertyUpdated('OverpaymentID', $value);
+        $this->_data['OverpaymentID'] = $value;
         return $this;
     }
 
