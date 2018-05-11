@@ -311,7 +311,7 @@ class Invoice extends Remote\Object
             'InvoiceID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
             'HasAttachments' => array (false, self::PROPERTY_TYPE_BOOLEAN, null, false, false),
             'Payments' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Payment', true, false),
-            'Prepayments' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Prepayment', true, false),
+            'Prepayments' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Prepayment\\Allocation', true, false),
             'Overpayments' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Overpayment\\Allocation', true, false),
             'AmountDue' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false),
             'AmountPaid' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false),
@@ -710,7 +710,7 @@ class Invoice extends Remote\Object
 
 
     /**
-     * @return Prepayment[]|Remote\Collection
+     * @return Prepayment\Allocation[]|Remote\Collection
      * Always returns a collection, switch is for type hinting
      */
     public function getPrepayments()
