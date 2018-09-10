@@ -3,7 +3,7 @@ namespace XeroPHP\Models\PayrollAU\Payslip;
 
 use XeroPHP\Remote;
 
-class DeductionLine extends Remote\Object
+class DeductionLine extends Remote\Model
 {
 
     /**
@@ -30,8 +30,6 @@ class DeductionLine extends Remote\Object
      * @property float[] NumberOfUnits
      */
 
-
-
     /**
      * Get the resource uri of the class (Contacts) etc
      *
@@ -41,7 +39,6 @@ class DeductionLine extends Remote\Object
     {
         return 'DeductionLine';
     }
-
 
     /**
      * Get the root node name.  Just the unqualified classname
@@ -53,7 +50,6 @@ class DeductionLine extends Remote\Object
         return 'DeductionLine';
     }
 
-
     /**
      * Get the guid property
      *
@@ -63,7 +59,6 @@ class DeductionLine extends Remote\Object
     {
         return '';
     }
-
 
     /**
      * Get the stem of the API (core.xro) etc
@@ -75,14 +70,13 @@ class DeductionLine extends Remote\Object
         return Remote\URL::API_PAYROLL;
     }
 
-
     /**
      * Get the supported methods
      */
     public static function getSupportedMethods()
     {
-        return array(
-        );
+        return [
+        ];
     }
 
     /**
@@ -98,12 +92,13 @@ class DeductionLine extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'DeductionTypeID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'CalculationType' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false),
-            'Percentage' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'NumberOfUnits' => array (false, self::PROPERTY_TYPE_FLOAT, null, true, false)
-        );
+        return [
+            'DeductionTypeID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'CalculationType' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Amount' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Percentage' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'NumberOfUnits' => [false, self::PROPERTY_TYPE_FLOAT, null, true, false],
+        ];
     }
 
     public static function isPageable()
@@ -152,6 +147,25 @@ class DeductionLine extends Remote\Object
     /**
      * @return string
      */
+    public function getAmount()
+    {
+        return $this->_data['Amount'];
+    }
+
+    /**
+     * @param string $value
+     * @return DeductionLine
+     */
+    public function setAmount($value)
+    {
+        $this->propertyUpdated('Amount', $value);
+        $this->_data['Amount'] = $value;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getPercentage()
     {
         return $this->_data['Percentage'];
@@ -184,12 +198,11 @@ class DeductionLine extends Remote\Object
     public function addNumberOfUnit($value)
     {
         $this->propertyUpdated('NumberOfUnits', $value);
-        if(!isset($this->_data['NumberOfUnits'])){
+        if (!isset($this->_data['NumberOfUnits'])) {
             $this->_data['NumberOfUnits'] = new Remote\Collection();
         }
         $this->_data['NumberOfUnits'][] = $value;
         return $this;
     }
-
 
 }

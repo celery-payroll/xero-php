@@ -4,7 +4,7 @@ namespace XeroPHP\Models\Accounting\Invoice;
 use XeroPHP\Remote;
 use XeroPHP\Models\Accounting\TrackingCategory;
 
-class LineItem extends Remote\Object
+class LineItem extends Remote\Model
 {
 
     /**
@@ -14,7 +14,7 @@ class LineItem extends Remote\Object
      */
 
     /**
-     * LineItem Quantity
+     * LineItem Quantity (max length = 13)
      *
      * @property string Quantity
      */
@@ -62,7 +62,7 @@ class LineItem extends Remote\Object
 
     /**
      * The line amount reflects the discounted price if a DiscountRate has been used i.e LineAmount =
-     * Quantity * Unit Amount * ((100 – DiscountRate)/100)
+     * Quantity * Unit Amount * ((100 – DiscountRate)/100)  (can’t exceed 9,999,999,999.99 )
      *
      * @property float LineAmount
      */
@@ -132,8 +132,8 @@ class LineItem extends Remote\Object
      */
     public static function getSupportedMethods()
     {
-        return array(
-        );
+        return [
+        ];
     }
 
     /**
@@ -149,19 +149,19 @@ class LineItem extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'Description' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'Quantity' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'UnitAmount' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false),
-            'ItemCode' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'AccountCode' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'LineItemID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'TaxType' => array (false, self::PROPERTY_TYPE_ENUM, null, false, false),
-            'TaxAmount' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false),
-            'LineAmount' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false),
-            'Tracking' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\TrackingCategory', true, false),
-            'DiscountRate' => array (false, self::PROPERTY_TYPE_STRING, null, false, false)
-        );
+        return [
+            'Description' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Quantity' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'UnitAmount' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
+            'ItemCode' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'AccountCode' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'LineItemID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'TaxType' => [false, self::PROPERTY_TYPE_ENUM, null, false, false],
+            'TaxAmount' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
+            'LineAmount' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
+            'Tracking' => [false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\TrackingCategory', true, false],
+            'DiscountRate' => [false, self::PROPERTY_TYPE_STRING, null, false, false]
+        ];
     }
 
     public static function isPageable()
@@ -356,7 +356,7 @@ class LineItem extends Remote\Object
     public function addTracking(TrackingCategory $value)
     {
         $this->propertyUpdated('Tracking', $value);
-        if(!isset($this->_data['Tracking'])){
+        if (!isset($this->_data['Tracking'])) {
             $this->_data['Tracking'] = new Remote\Collection();
         }
         $this->_data['Tracking'][] = $value;

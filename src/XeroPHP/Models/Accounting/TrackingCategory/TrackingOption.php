@@ -3,7 +3,7 @@ namespace XeroPHP\Models\Accounting\TrackingCategory;
 
 use XeroPHP\Remote;
 
-class TrackingOption extends Remote\Object
+class TrackingOption extends Remote\Model
 {
 
     /**
@@ -13,7 +13,7 @@ class TrackingOption extends Remote\Object
      */
 
     /**
-     * The name of the tracking option e.g. Marketing, East
+     * The name of the tracking option e.g. Marketing, East (max length = 50)
      *
      * @property string Name
      */
@@ -75,8 +75,8 @@ class TrackingOption extends Remote\Object
      */
     public static function getSupportedMethods()
     {
-        return array(
-        );
+        return [
+        ];
     }
 
     /**
@@ -92,11 +92,11 @@ class TrackingOption extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'TrackingOptionID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'Name' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'Status' => array (false, self::PROPERTY_TYPE_STRING, null, false, false)
-        );
+        return [
+            'TrackingOptionID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Name' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Status' => [false, self::PROPERTY_TYPE_STRING, null, false, false]
+        ];
     }
 
     public static function isPageable()

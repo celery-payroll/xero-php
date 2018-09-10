@@ -3,7 +3,7 @@ namespace XeroPHP\Models\PayrollUS\Setting;
 
 use XeroPHP\Remote;
 
-class TrackingCategory extends Remote\Object
+class TrackingCategory extends Remote\Model
 {
 
     /**
@@ -69,8 +69,8 @@ class TrackingCategory extends Remote\Object
      */
     public static function getSupportedMethods()
     {
-        return array(
-        );
+        return [
+        ];
     }
 
     /**
@@ -86,10 +86,10 @@ class TrackingCategory extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'TrackingCategoryID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'TrackingCategoryName' => array (false, self::PROPERTY_TYPE_STRING, null, false, false)
-        );
+        return [
+            'TrackingCategoryID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'TrackingCategoryName' => [false, self::PROPERTY_TYPE_STRING, null, false, false]
+        ];
     }
 
     public static function isPageable()

@@ -1,12 +1,11 @@
 <?php
 
-class Enum implements ParsedObjectInterface {
-
+class Enum implements ParsedObjectInterface
+{
     private $group;
     private $name;
     private $raw_name;
     private $anchor;
-
     private $values;
 
     /**
@@ -17,15 +16,15 @@ class Enum implements ParsedObjectInterface {
     /**
      * @param $group string The doc group eg. Organisation
      * @param $name string The doc subsection, used for the constant name
-     * @param $anchor string Any links found in the docs.  Used to track which values are being referred to
+     * @param $anchor string Any links found in the docs. Used to track which values are being referred to
      * @param $raw_name string Raw name as in docs, used for generating constant name
      */
-    public function __construct($group, $name, $anchor, $raw_name){
+    public function __construct($group, $name, $anchor, $raw_name)
+    {
         $this->group = $group;
         $this->name = $name;
         $this->raw_name = $raw_name;
         $this->anchor = $anchor;
-
         $this->longest_name = 0;
     }
 
@@ -35,41 +34,44 @@ class Enum implements ParsedObjectInterface {
      * @param $name
      * @param $description
      */
-    public function addValue($name, $description){
-        $this->values[$name] = array(
+    public function addValue($name, $description)
+    {
+        $this->values[$name] = [
             'name' => $name,
             'description' => $description
-        );
+        ];
 
         $name_length = strlen($name);
-        if($name_length > $this->longest_name)
+        if ($name_length > $this->longest_name) {
             $this->longest_name = $name_length;
+        }
     }
 
     /**
      * Remove an the Enum set.  This requires at least a name
      *
      * @param $name
-     * @param $description
      */
-    public function removeValue($name){
+    public function removeValue($name)
+    {
         unset($this->values[$name]);
     }
 
     /**
-     * Get an array of arrays representing an enum value.  It contains a precomputed constant name with padding.
+     * Get an array of arrays representing an enum value.
+     * It contains a precomputed constant name with padding.
      *
      * @return array
      */
-    public function getValues(){
-
-        $values = array();
-        foreach($this->values as $value){
-            $values[] = array(
+    public function getValues()
+    {
+        $values = [];
+        foreach ($this->values as $value) {
+            $values[] = [
                 'constant_name' => $this->getConstantName($value['name']),
                 'value' => $value['name'],
                 'description' > $value['description']
-            );
+            ];
         }
         return $values;
     }
@@ -81,11 +83,13 @@ class Enum implements ParsedObjectInterface {
      * @param bool $with_padding
      * @return string
      */
-    public function getConstantName($value, $with_padding = true){
+    public function getConstantName($value, $with_padding = true)
+    {
         $constant_name = strtoupper(sprintf('%s_%s', preg_replace('/[^a-z0-9]+/i', '_', trim($this->getConstantPrefix())), preg_replace('/[^a-z0-9]+/i', '_', $value)));
 
-        if($with_padding !== true)
+        if ($with_padding !== true) {
             return $constant_name;
+        }
 
         $padding = str_repeat(' ', $this->longest_name - strlen($value));
         return $constant_name.$padding;
@@ -97,15 +101,17 @@ class Enum implements ParsedObjectInterface {
      *
      * @return mixed
      */
-    public function getConstantPrefix(){
+    public function getConstantPrefix()
+    {
         $sane_name = preg_replace('/\([\w\s]+\)/', '', $this->raw_name);
         return \XeroPHP\Helpers::singularize(preg_replace('/(\b(code)s?)/i', '', trim($sane_name)));
     }
 
     /**
-     * @param The raw name
+     * @param string $name The raw name
      */
-    public function setRawName($name) {
+    public function setRawName($name)
+    {
         $this->raw_name = $name;
     }
 
@@ -114,7 +120,8 @@ class Enum implements ParsedObjectInterface {
      *
      * @return mixed
      */
-    public function getGroup(){
+    public function getGroup()
+    {
         return $this->group;
     }
 
@@ -123,7 +130,8 @@ class Enum implements ParsedObjectInterface {
      *
      * @return mixed
      */
-    public function getName(){
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -131,7 +139,8 @@ class Enum implements ParsedObjectInterface {
      * Setter for Enum name
      * @param $name
      */
-    public function setName($name){
+    public function setName($name)
+    {
         $this->name = $name;
     }
 
@@ -140,18 +149,18 @@ class Enum implements ParsedObjectInterface {
      *
      * @return mixed
      */
-    public function getAnchor(){
+    public function getAnchor()
+    {
         return $this->anchor;
     }
 
-    public function hasValue($string) {
-        foreach($this->getValues() as $value) {
-            if($value['value'] === $string){
+    public function hasValue($string)
+    {
+        foreach ($this->getValues() as $value) {
+            if ($value['value'] === $string) {
                 return true;
             }
         }
         return false;
     }
-
-
 }

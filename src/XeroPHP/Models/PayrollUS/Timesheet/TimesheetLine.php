@@ -3,7 +3,7 @@ namespace XeroPHP\Models\PayrollUS\Timesheet;
 
 use XeroPHP\Remote;
 
-class TimesheetLine extends Remote\Object
+class TimesheetLine extends Remote\Model
 {
 
     /**
@@ -22,7 +22,14 @@ class TimesheetLine extends Remote\Object
     /**
      * Number of units of a Timesheet line
      *
-     * @property string NumberOfUnits
+     * @property float[] NumberOfUnits
+     */
+
+    /**
+     * The Xero identifier for a Work Location, which must have been added for this employee under Payroll
+     * -> Employees -> Employment.
+     *
+     * @property string WorkLocationID
      */
 
 
@@ -76,8 +83,8 @@ class TimesheetLine extends Remote\Object
      */
     public static function getSupportedMethods()
     {
-        return array(
-        );
+        return [
+        ];
     }
 
     /**
@@ -93,11 +100,12 @@ class TimesheetLine extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'EarningsTypeID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'TrackingItemID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'NumberOfUnits' => array (false, self::PROPERTY_TYPE_STRING, null, false, false)
-        );
+        return [
+            'EarningsTypeID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'TrackingItemID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'NumberOfUnits' => [false, self::PROPERTY_TYPE_FLOAT, null, true, false],
+            'WorkLocationID' => [false, self::PROPERTY_TYPE_STRING, null, false, false]
+        ];
     }
 
     public static function isPageable()
@@ -144,7 +152,8 @@ class TimesheetLine extends Remote\Object
     }
 
     /**
-     * @return string
+     * @return float[]|Remote\Collection
+     * Always returns a collection, switch is for type hinting
      */
     public function getNumberOfUnits()
     {
@@ -152,13 +161,35 @@ class TimesheetLine extends Remote\Object
     }
 
     /**
+     * @param float $value
+     * @return TimesheetLine
+     */
+    public function addNumberOfUnit($value)
+    {
+        $this->propertyUpdated('NumberOfUnits', $value);
+        if (!isset($this->_data['NumberOfUnits'])) {
+            $this->_data['NumberOfUnits'] = new Remote\Collection();
+        }
+        $this->_data['NumberOfUnits'][] = $value;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWorkLocationID()
+    {
+        return $this->_data['WorkLocationID'];
+    }
+
+    /**
      * @param string $value
      * @return TimesheetLine
      */
-    public function setNumberOfUnit($value)
+    public function setWorkLocationID($value)
     {
-        $this->propertyUpdated('NumberOfUnits', $value);
-        $this->_data['NumberOfUnits'] = $value;
+        $this->propertyUpdated('WorkLocationID', $value);
+        $this->_data['WorkLocationID'] = $value;
         return $this;
     }
 

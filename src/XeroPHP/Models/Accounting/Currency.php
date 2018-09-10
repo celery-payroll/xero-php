@@ -3,7 +3,7 @@ namespace XeroPHP\Models\Accounting;
 
 use XeroPHP\Remote;
 
-class Currency extends Remote\Object
+class Currency extends Remote\Model
 {
 
     /**
@@ -76,9 +76,10 @@ class Currency extends Remote\Object
      */
     public static function getSupportedMethods()
     {
-        return array(
-            Remote\Request::METHOD_GET
-        );
+        return [
+            Remote\Request::METHOD_GET,
+            Remote\Request::METHOD_PUT
+        ];
     }
 
     /**
@@ -94,11 +95,11 @@ class Currency extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'ModifiedAfter' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'Code' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'Description' => array (false, self::PROPERTY_TYPE_STRING, null, false, false)
-        );
+        return [
+            'ModifiedAfter' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Code' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Description' => [false, self::PROPERTY_TYPE_STRING, null, false, false]
+        ];
     }
 
     public static function isPageable()

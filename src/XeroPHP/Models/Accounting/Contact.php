@@ -6,7 +6,7 @@ use XeroPHP\Traits\AttachmentTrait;
 use XeroPHP\Models\Accounting\Contact\ContactPerson;
 use XeroPHP\Models\Accounting\Organisation\PaymentTerm;
 
-class Contact extends Remote\Object
+class Contact extends Remote\Model
 {
 
     use AttachmentTrait;
@@ -38,7 +38,7 @@ class Contact extends Remote\Object
      */
 
     /**
-     * Full name of contact/organisation (max length = 500)
+     * Full name of contact/organisation (max length = 255)
      *
      * @property string Name
      */
@@ -56,7 +56,7 @@ class Contact extends Remote\Object
      */
 
     /**
-     * Email address of contact person (umlauts not supported) (max length = 500)
+     * Email address of contact person (umlauts not supported) (max length = 255)
      *
      * @property string EmailAddress
      */
@@ -164,6 +164,20 @@ class Contact extends Remote\Object
      */
 
     /**
+     * The name of the Tracking Category assigned to the contact under SalesTrackingCategories and
+     * PurchasesTrackingCategories
+     *
+     * @property string TrackingCategoryName
+     */
+
+    /**
+     * The name of the Tracking Option assigned to the contact under SalesTrackingCategories and
+     * PurchasesTrackingCategories
+     *
+     * @property string TrackingCategoryOption
+     */
+
+    /**
      * The default payment terms for the contact – see Payment Terms
      *
      * @property PaymentTerm[] PaymentTerms
@@ -206,8 +220,8 @@ class Contact extends Remote\Object
      */
 
     /**
-     * The AccountsReceivable(sales invoices) and AccountsPayable(bills) outstanding and overdue amounts
-     * (read only)
+     * The raw AccountsReceivable(sales invoices) and AccountsPayable(bills) outstanding and overdue
+     * amounts, not converted to base currency (read only)
      *
      * @property string Balances
      */
@@ -272,11 +286,11 @@ class Contact extends Remote\Object
      */
     public static function getSupportedMethods()
     {
-        return array(
+        return [
             Remote\Request::METHOD_POST,
             Remote\Request::METHOD_PUT,
             Remote\Request::METHOD_GET
-        );
+        ];
     }
 
     /**
@@ -292,41 +306,43 @@ class Contact extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'ContactID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'ContactNumber' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'AccountNumber' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'ContactStatus' => array (false, self::PROPERTY_TYPE_ENUM, null, false, false),
-            'Name' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'FirstName' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'LastName' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'EmailAddress' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'SkypeUserName' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'ContactPersons' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Contact\\ContactPerson', true, false),
-            'BankAccountDetails' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'TaxNumber' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'AccountsReceivableTaxType' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'AccountsPayableTaxType' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'Addresses' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Address', true, false),
-            'Phones' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Phone', true, false),
-            'IsSupplier' => array (false, self::PROPERTY_TYPE_BOOLEAN, null, false, false),
-            'IsCustomer' => array (false, self::PROPERTY_TYPE_BOOLEAN, null, false, false),
-            'DefaultCurrency' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'XeroNetworkKey' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'SalesDefaultAccountCode' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'PurchasesDefaultAccountCode' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'SalesTrackingCategories' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\TrackingCategory', true, false),
-            'PurchasesTrackingCategories' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\TrackingCategory', true, false),
-            'PaymentTerms' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Organisation\\PaymentTerm', true, false),
-            'UpdatedDateUTC' => array (false, self::PROPERTY_TYPE_TIMESTAMP, '\\DateTimeInterface', false, false),
-            'ContactGroups' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\ContactGroup', true, false),
-            'Website' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'BrandingTheme' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\BrandingTheme', false, false),
-            'BatchPayments' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'Discount' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false),
-            'Balances' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'HasAttachments' => array (false, self::PROPERTY_TYPE_BOOLEAN, null, false, false)
-        );
+        return [
+            'ContactID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'ContactNumber' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'AccountNumber' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'ContactStatus' => [false, self::PROPERTY_TYPE_ENUM, null, false, false],
+            'Name' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'FirstName' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'LastName' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'EmailAddress' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'SkypeUserName' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'ContactPersons' => [false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Contact\\ContactPerson', true, false],
+            'BankAccountDetails' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'TaxNumber' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'AccountsReceivableTaxType' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'AccountsPayableTaxType' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Addresses' => [false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Address', true, false],
+            'Phones' => [false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Phone', true, false],
+            'IsSupplier' => [false, self::PROPERTY_TYPE_BOOLEAN, null, false, false],
+            'IsCustomer' => [false, self::PROPERTY_TYPE_BOOLEAN, null, false, false],
+            'DefaultCurrency' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'XeroNetworkKey' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'SalesDefaultAccountCode' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'PurchasesDefaultAccountCode' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'SalesTrackingCategories' => [false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\TrackingCategory', true, false],
+            'PurchasesTrackingCategories' => [false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\TrackingCategory', true, false],
+            'TrackingCategoryName' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'TrackingCategoryOption' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'PaymentTerms' => [false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Organisation\\PaymentTerm', true, false],
+            'UpdatedDateUTC' => [false, self::PROPERTY_TYPE_TIMESTAMP, '\\DateTimeInterface', false, false],
+            'ContactGroups' => [false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\ContactGroup', true, false],
+            'Website' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'BrandingTheme' => [false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\BrandingTheme', false, false],
+            'BatchPayments' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Discount' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
+            'Balances' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'HasAttachments' => [false, self::PROPERTY_TYPE_BOOLEAN, null, false, false]
+        ];
     }
 
     public static function isPageable()
@@ -521,7 +537,7 @@ class Contact extends Remote\Object
     public function addContactPerson(ContactPerson $value)
     {
         $this->propertyUpdated('ContactPersons', $value);
-        if(!isset($this->_data['ContactPersons'])){
+        if (!isset($this->_data['ContactPersons'])) {
             $this->_data['ContactPersons'] = new Remote\Collection();
         }
         $this->_data['ContactPersons'][] = $value;
@@ -620,7 +636,7 @@ class Contact extends Remote\Object
     public function addAddress(Address $value)
     {
         $this->propertyUpdated('Addresses', $value);
-        if(!isset($this->_data['Addresses'])){
+        if (!isset($this->_data['Addresses'])) {
             $this->_data['Addresses'] = new Remote\Collection();
         }
         $this->_data['Addresses'][] = $value;
@@ -643,7 +659,7 @@ class Contact extends Remote\Object
     public function addPhone(Phone $value)
     {
         $this->propertyUpdated('Phones', $value);
-        if(!isset($this->_data['Phones'])){
+        if (!isset($this->_data['Phones'])) {
             $this->_data['Phones'] = new Remote\Collection();
         }
         $this->_data['Phones'][] = $value;
@@ -659,15 +675,10 @@ class Contact extends Remote\Object
     }
 
     /**
-     * @param bool $value
-     * @return Contact
+     * @deprecated - this is a read only property and this method will be removed in future versions
+     * @param $value
      */
-    public function setIsSupplier($value)
-    {
-        $this->propertyUpdated('IsSupplier', $value);
-        $this->_data['IsSupplier'] = $value;
-        return $this;
-    }
+    public function setIsSupplier($value){}
 
     /**
      * @return bool
@@ -678,15 +689,10 @@ class Contact extends Remote\Object
     }
 
     /**
-     * @param bool $value
-     * @return Contact
+     * @deprecated - this is a read only property and this method will be removed in future versions
+     * @param $value
      */
-    public function setIsCustomer($value)
-    {
-        $this->propertyUpdated('IsCustomer', $value);
-        $this->_data['IsCustomer'] = $value;
-        return $this;
-    }
+    public function setIsCustomer($value){}
 
     /**
      * @return string
@@ -780,7 +786,7 @@ class Contact extends Remote\Object
     public function addSalesTrackingCategory(TrackingCategory $value)
     {
         $this->propertyUpdated('SalesTrackingCategories', $value);
-        if(!isset($this->_data['SalesTrackingCategories'])){
+        if (!isset($this->_data['SalesTrackingCategories'])) {
             $this->_data['SalesTrackingCategories'] = new Remote\Collection();
         }
         $this->_data['SalesTrackingCategories'][] = $value;
@@ -803,10 +809,48 @@ class Contact extends Remote\Object
     public function addPurchasesTrackingCategory(TrackingCategory $value)
     {
         $this->propertyUpdated('PurchasesTrackingCategories', $value);
-        if(!isset($this->_data['PurchasesTrackingCategories'])){
+        if (!isset($this->_data['PurchasesTrackingCategories'])) {
             $this->_data['PurchasesTrackingCategories'] = new Remote\Collection();
         }
         $this->_data['PurchasesTrackingCategories'][] = $value;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTrackingCategoryName()
+    {
+        return $this->_data['TrackingCategoryName'];
+    }
+
+    /**
+     * @param string $value
+     * @return Contact
+     */
+    public function setTrackingCategoryName($value)
+    {
+        $this->propertyUpdated('TrackingCategoryName', $value);
+        $this->_data['TrackingCategoryName'] = $value;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTrackingCategoryOption()
+    {
+        return $this->_data['TrackingCategoryOption'];
+    }
+
+    /**
+     * @param string $value
+     * @return Contact
+     */
+    public function setTrackingCategoryOption($value)
+    {
+        $this->propertyUpdated('TrackingCategoryOption', $value);
+        $this->_data['TrackingCategoryOption'] = $value;
         return $this;
     }
 
@@ -826,7 +870,7 @@ class Contact extends Remote\Object
     public function addPaymentTerm(PaymentTerm $value)
     {
         $this->propertyUpdated('PaymentTerms', $value);
-        if(!isset($this->_data['PaymentTerms'])){
+        if (!isset($this->_data['PaymentTerms'])) {
             $this->_data['PaymentTerms'] = new Remote\Collection();
         }
         $this->_data['PaymentTerms'][] = $value;
@@ -868,7 +912,7 @@ class Contact extends Remote\Object
     public function addContactGroup(ContactGroup $value)
     {
         $this->propertyUpdated('ContactGroups', $value);
-        if(!isset($this->_data['ContactGroups'])){
+        if (!isset($this->_data['ContactGroups'])) {
             $this->_data['ContactGroups'] = new Remote\Collection();
         }
         $this->_data['ContactGroups'][] = $value;
@@ -979,15 +1023,10 @@ class Contact extends Remote\Object
     }
 
     /**
-     * @param bool $value
-     * @return Contact
+     * @deprecated - this is a read only property and this method will be removed in future versions
+     * @param $value
      */
-    public function setHasAttachment($value)
-    {
-        $this->propertyUpdated('HasAttachments', $value);
-        $this->_data['HasAttachments'] = $value;
-        return $this;
-    }
+    public function setHasAttachment($value){}
 
 
 }

@@ -4,7 +4,7 @@ namespace XeroPHP\Models\Accounting;
 use XeroPHP\Remote;
 use XeroPHP\Models\Accounting\TrackingCategory\TrackingOption;
 
-class TrackingCategory extends Remote\Object
+class TrackingCategory extends Remote\Model
 {
 
     /**
@@ -14,7 +14,7 @@ class TrackingCategory extends Remote\Object
      */
 
     /**
-     * The name of the tracking category e.g. Department, Region
+     * The name of the tracking category e.g. Department, Region (max length = 100)
      *
      * @property string Name
      */
@@ -29,6 +29,12 @@ class TrackingCategory extends Remote\Object
      * See Tracking Options
      *
      * @property TrackingOption[] Options
+     */
+
+    /**
+     * Selected Option name
+     *
+     * @property string Option
      */
 
 
@@ -82,12 +88,12 @@ class TrackingCategory extends Remote\Object
      */
     public static function getSupportedMethods()
     {
-        return array(
+        return [
             Remote\Request::METHOD_GET,
             Remote\Request::METHOD_PUT,
             Remote\Request::METHOD_POST,
             Remote\Request::METHOD_DELETE
-        );
+        ];
     }
 
     /**
@@ -103,12 +109,15 @@ class TrackingCategory extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'TrackingCategoryID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'Name' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'Status' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'Options' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\TrackingCategory\\TrackingOption', true, false)
-        );
+        return [
+            'TrackingCategoryID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Name' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'TrackingCategoryName' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'TrackingOptionName' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Status' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Options' => [false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\TrackingCategory\\TrackingOption', true, true],
+            'Option' => [false, self::PROPERTY_TYPE_STRING, null, false, true]
+        ];
     }
 
     public static function isPageable()
@@ -153,6 +162,44 @@ class TrackingCategory extends Remote\Object
         $this->_data['Name'] = $value;
         return $this;
     }
+    
+    /**
+     * @return string
+     */
+    public function getTrackingCategoryName()
+    {
+        return $this->_data['TrackingCategoryName'];
+    }
+
+    /**
+     * @param string $value
+     * @return TrackingCategory
+     */
+    public function setTrackingCategoryName($value)
+    {
+        $this->propertyUpdated('TrackingCategoryName', $value);
+        $this->_data['TrackingCategoryName'] = $value;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTrackingOptionName()
+    {
+        return $this->_data['TrackingOptionName'];
+    }
+
+    /**
+     * @param string $value
+     * @return TrackingCategory
+     */
+    public function setTrackingOptionName($value)
+    {
+        $this->propertyUpdated('TrackingOptionName', $value);
+        $this->_data['TrackingOptionName'] = $value;
+        return $this;
+    }
 
     /**
      * @return string
@@ -189,10 +236,30 @@ class TrackingCategory extends Remote\Object
     public function addOption(TrackingOption $value)
     {
         $this->propertyUpdated('Options', $value);
-        if(!isset($this->_data['Options'])){
+        if (!isset($this->_data['Options'])) {
             $this->_data['Options'] = new Remote\Collection();
         }
         $this->_data['Options'][] = $value;
+        return $this;
+    }
+
+    /**
+     * @return string $value
+     * Returns selected option name
+     */
+    public function getOption()
+    {
+        return $this->_data['Option'];
+    }
+
+    /**
+     * @param string $value
+     * @return TrackingCategory
+     */
+    public function setOption($value)
+    {
+        $this->propertyUpdated('Option', $value);
+        $this->_data['Option'] = $value;
         return $this;
     }
 

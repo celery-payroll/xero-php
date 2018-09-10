@@ -3,7 +3,7 @@ namespace XeroPHP\Models\Accounting\TaxRate;
 
 use XeroPHP\Remote;
 
-class TaxComponent extends Remote\Object
+class TaxComponent extends Remote\Model
 {
 
     /**
@@ -21,7 +21,7 @@ class TaxComponent extends Remote\Object
     /**
      * Boolean to describe if Tax rate is compounded.Learn more
      *
-     * @property float IsCompound
+     * @property bool IsCompound
      */
 
 
@@ -75,8 +75,8 @@ class TaxComponent extends Remote\Object
      */
     public static function getSupportedMethods()
     {
-        return array(
-        );
+        return [
+        ];
     }
 
     /**
@@ -92,11 +92,11 @@ class TaxComponent extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'Name' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'Rate' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false),
-            'IsCompound' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false)
-        );
+        return [
+            'Name' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Rate' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
+            'IsCompound' => [false, self::PROPERTY_TYPE_BOOLEAN, null, false, false]
+        ];
     }
 
     public static function isPageable()
@@ -143,7 +143,7 @@ class TaxComponent extends Remote\Object
     }
 
     /**
-     * @return float
+     * @return bool
      */
     public function getIsCompound()
     {
@@ -151,7 +151,7 @@ class TaxComponent extends Remote\Object
     }
 
     /**
-     * @param float $value
+     * @param bool $value
      * @return TaxComponent
      */
     public function setIsCompound($value)

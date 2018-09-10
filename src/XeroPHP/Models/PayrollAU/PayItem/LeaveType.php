@@ -3,7 +3,7 @@ namespace XeroPHP\Models\PayrollAU\PayItem;
 
 use XeroPHP\Remote;
 
-class LeaveType extends Remote\Object
+class LeaveType extends Remote\Model
 {
 
     /**
@@ -16,7 +16,7 @@ class LeaveType extends Remote\Object
      * The type of units by which leave entitlements are normally tracked. These are typically the same as
      * the type of units used for the employee’s ordinary earnings rate
      *
-     * @property float[] TypeOfUnits
+     * @property string TypeOfUnits
      */
 
     /**
@@ -101,8 +101,8 @@ class LeaveType extends Remote\Object
      */
     public static function getSupportedMethods()
     {
-        return array(
-        );
+        return [
+        ];
     }
 
     /**
@@ -118,15 +118,15 @@ class LeaveType extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'Name' => array (true, self::PROPERTY_TYPE_STRING, null, false, false),
-            'TypeOfUnits' => array (true, self::PROPERTY_TYPE_FLOAT, null, true, false),
-            'IsPaidLeave' => array (true, self::PROPERTY_TYPE_STRING, null, false, false),
-            'ShowOnPayslip' => array (true, self::PROPERTY_TYPE_STRING, null, false, false),
-            'LeaveTypeID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'NormalEntitlement' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'LeaveLoadingRate' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false)
-        );
+        return [
+            'Name' => [true, self::PROPERTY_TYPE_STRING, null, false, false],
+            'TypeOfUnits' => [true, self::PROPERTY_TYPE_STRING, null, true, false],
+            'IsPaidLeave' => [true, self::PROPERTY_TYPE_STRING, null, false, false],
+            'ShowOnPayslip' => [true, self::PROPERTY_TYPE_STRING, null, false, false],
+            'LeaveTypeID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'NormalEntitlement' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'LeaveLoadingRate' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false]
+        ];
     }
 
     public static function isPageable()
@@ -154,7 +154,7 @@ class LeaveType extends Remote\Object
     }
 
     /**
-     * @return float[]|Remote\Collection
+     * @return string
      * Always returns a collection, switch is for type hinting
      */
     public function getTypeOfUnits()
@@ -162,17 +162,15 @@ class LeaveType extends Remote\Object
         return $this->_data['TypeOfUnits'];
     }
 
+
     /**
-     * @param float $value
+     * @param string $value
      * @return LeaveType
      */
-    public function addTypeOfUnit($value)
+    public function setTypeOfUnits($value)
     {
         $this->propertyUpdated('TypeOfUnits', $value);
-        if(!isset($this->_data['TypeOfUnits'])){
-            $this->_data['TypeOfUnits'] = new Remote\Collection();
-        }
-        $this->_data['TypeOfUnits'][] = $value;
+        $this->_data['TypeOfUnits'] = $value;
         return $this;
     }
 

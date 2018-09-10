@@ -3,7 +3,7 @@ namespace XeroPHP\Models\PayrollUS\Employee;
 
 use XeroPHP\Remote;
 
-class WorkLocation extends Remote\Object
+class WorkLocation extends Remote\Model
 {
 
     /**
@@ -69,8 +69,8 @@ class WorkLocation extends Remote\Object
      */
     public static function getSupportedMethods()
     {
-        return array(
-        );
+        return [
+        ];
     }
 
     /**
@@ -86,10 +86,10 @@ class WorkLocation extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'WorkLocationID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'IsPrimary' => array (false, self::PROPERTY_TYPE_BOOLEAN, null, false, false)
-        );
+        return [
+            'WorkLocationID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'IsPrimary' => [false, self::PROPERTY_TYPE_BOOLEAN, null, false, false]
+        ];
     }
 
     public static function isPageable()

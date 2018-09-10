@@ -2,9 +2,11 @@
 namespace XeroPHP\Models\Accounting;
 
 use XeroPHP\Remote;
+use XeroPHP\Traits\AttachmentTrait;
 
-class ExpenseClaim extends Remote\Object
+class ExpenseClaim extends Remote\Model
 {
+    use AttachmentTrait;
 
     /**
      * Xero identifier
@@ -79,11 +81,11 @@ class ExpenseClaim extends Remote\Object
      */
     public static function getSupportedMethods()
     {
-        return array(
+        return [
             Remote\Request::METHOD_GET,
             Remote\Request::METHOD_PUT,
             Remote\Request::METHOD_POST
-        );
+        ];
     }
 
     /**
@@ -99,12 +101,22 @@ class ExpenseClaim extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'ExpenseClaimID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'User' => array (true, self::PROPERTY_TYPE_OBJECT, 'Accounting\\User', false, false),
-            'Receipts' => array (true, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Receipt', true, false)
-        );
+        return [
+            'ExpenseClaimID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'User' => [true, self::PROPERTY_TYPE_OBJECT, 'Accounting\\User', false, false],
+            'Receipts' => [true, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Receipt', true, false],
+            'Payments' => [false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\Payment', true, false],
+            'Status' => [false, self::PROPERTY_TYPE_ENUM, null, false, false],
+            'UpdatedDateUTC' => [false, self::PROPERTY_TYPE_TIMESTAMP, '\\DateTimeInterface', false, false],
+            'Total' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
+            'AmountDue' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
+            'AmountPaid' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
+            'PaymentDueDate' => [false, self::PROPERTY_TYPE_TIMESTAMP, '\\DateTimeInterface', false, false],
+            'ReportingDate' => [false, self::PROPERTY_TYPE_TIMESTAMP, '\\DateTimeInterface', false, false],
+
+        ];
     }
+
 
     public static function isPageable()
     {
@@ -165,12 +177,85 @@ class ExpenseClaim extends Remote\Object
     public function addReceipt(Receipt $value)
     {
         $this->propertyUpdated('Receipts', $value);
-        if(!isset($this->_data['Receipts'])){
+        if (!isset($this->_data['Receipts'])) {
             $this->_data['Receipts'] = new Remote\Collection();
         }
         $this->_data['Receipts'][] = $value;
         return $this;
     }
 
+    /**
+     * @return Payment[]
+     */
+    public function getPayments()
+    {
+        return $this->_data['Payments'];
+    }
 
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->_data['Status'];
+    }
+
+    /**
+     * @param string $value
+     * @return ExpenseClaim
+     */
+    public function setStatus($value)
+    {
+        $this->propertyUpdated('Status', $value);
+        $this->_data['Status'] = $value;
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getUpdatedDateUTC()
+    {
+        return $this->_data['UpdatedDateUTC'];
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotal()
+    {
+        return $this->_data['Total'];
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmountDue()
+    {
+        return $this->_data['AmountDue'];
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmountPaid()
+    {
+        return $this->_data['AmountPaid'];
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getPaymentDueDate()
+    {
+        return $this->_data['PaymentDueDate'];
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getReportingDate()
+    {
+        return $this->_data['ReportingDate'];
+    }
 }

@@ -4,7 +4,7 @@ namespace XeroPHP\Models\Accounting\Receipt;
 use XeroPHP\Remote;
 use XeroPHP\Models\Accounting\TrackingCategory;
 
-class LineItem extends Remote\Object
+class LineItem extends Remote\Model
 {
 
     /**
@@ -52,7 +52,8 @@ class LineItem extends Remote\Object
 
     /**
      * Optional Tracking Category – see Tracking.  Any LineItem can have a maximum of 2
-     * <TrackingCategory> elements.
+     * <TrackingCategory> elements.  You must use the <Name> and <Option> elements instead of the
+     * <TrackingCategoryID> and <TrackingOptionID> fields.
      *
      * @property TrackingCategory[] Tracking
      */
@@ -115,8 +116,8 @@ class LineItem extends Remote\Object
      */
     public static function getSupportedMethods()
     {
-        return array(
-        );
+        return [
+        ];
     }
 
     /**
@@ -132,21 +133,41 @@ class LineItem extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'Description' => array (true, self::PROPERTY_TYPE_STRING, null, false, false),
-            'UnitAmount' => array (true, self::PROPERTY_TYPE_FLOAT, null, false, false),
-            'AccountCode' => array (true, self::PROPERTY_TYPE_STRING, null, false, false),
-            'Quantity' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'TaxType' => array (false, self::PROPERTY_TYPE_ENUM, null, false, false),
-            'LineAmount' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false),
-            'Tracking' => array (false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\TrackingCategory', true, false),
-            'DiscountRate' => array (false, self::PROPERTY_TYPE_STRING, null, false, false)
-        );
+        return [
+            'LineItemID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Description' => [true, self::PROPERTY_TYPE_STRING, null, false, false],
+            'UnitAmount' => [true, self::PROPERTY_TYPE_FLOAT, null, false, false],
+            'AccountCode' => [true, self::PROPERTY_TYPE_STRING, null, false, false],
+            'Quantity' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'TaxType' => [false, self::PROPERTY_TYPE_ENUM, null, false, false],
+            'LineAmount' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
+            'Tracking' => [false, self::PROPERTY_TYPE_OBJECT, 'Accounting\\TrackingCategory', true, false],
+            'DiscountRate' => [false, self::PROPERTY_TYPE_STRING, null, false, false]
+        ];
     }
 
     public static function isPageable()
     {
         return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLineItemID()
+    {
+        return $this->_data['LineItemID'];
+    }
+
+    /**
+     * @param string $value
+     * @return LineItem
+     */
+    public function setLineItemID($value)
+    {
+        $this->propertyUpdated('LineItemID', $value);
+        $this->_data['LineItemID'] = $value;
+        return $this;
     }
 
     /**
@@ -279,7 +300,7 @@ class LineItem extends Remote\Object
     public function addTracking(TrackingCategory $value)
     {
         $this->propertyUpdated('Tracking', $value);
-        if(!isset($this->_data['Tracking'])){
+        if (!isset($this->_data['Tracking'])) {
             $this->_data['Tracking'] = new Remote\Collection();
         }
         $this->_data['Tracking'][] = $value;

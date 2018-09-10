@@ -3,7 +3,7 @@ namespace XeroPHP\Models\PayrollAU\Payslip;
 
 use XeroPHP\Remote;
 
-class EarningsLine extends Remote\Object
+class EarningsLine extends Remote\Model
 {
 
     /**
@@ -30,8 +30,6 @@ class EarningsLine extends Remote\Object
      * @property float FixedAmount
      */
 
-
-
     /**
      * Get the resource uri of the class (Contacts) etc
      *
@@ -41,7 +39,6 @@ class EarningsLine extends Remote\Object
     {
         return 'EarningsLine';
     }
-
 
     /**
      * Get the root node name.  Just the unqualified classname
@@ -53,7 +50,6 @@ class EarningsLine extends Remote\Object
         return 'EarningsLine';
     }
 
-
     /**
      * Get the guid property
      *
@@ -63,7 +59,6 @@ class EarningsLine extends Remote\Object
     {
         return '';
     }
-
 
     /**
      * Get the stem of the API (core.xro) etc
@@ -75,14 +70,13 @@ class EarningsLine extends Remote\Object
         return Remote\URL::API_PAYROLL;
     }
 
-
     /**
      * Get the supported methods
      */
     public static function getSupportedMethods()
     {
-        return array(
-        );
+        return [
+        ];
     }
 
     /**
@@ -98,12 +92,12 @@ class EarningsLine extends Remote\Object
      */
     public static function getProperties()
     {
-        return array(
-            'EarningsRateID' => array (false, self::PROPERTY_TYPE_STRING, null, false, false),
-            'RatePerUnit' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false),
-            'NumberOfUnits' => array (false, self::PROPERTY_TYPE_FLOAT, null, true, false),
-            'FixedAmount' => array (false, self::PROPERTY_TYPE_FLOAT, null, false, false)
-        );
+        return [
+            'EarningsRateID' => [false, self::PROPERTY_TYPE_STRING, null, false, false],
+            'RatePerUnit' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
+            'NumberOfUnits' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
+            'FixedAmount' => [false, self::PROPERTY_TYPE_FLOAT, null, false, false],
+        ];
     }
 
     public static function isPageable()
@@ -162,13 +156,10 @@ class EarningsLine extends Remote\Object
      * @param float $value
      * @return EarningsLine
      */
-    public function addNumberOfUnit($value)
+    public function setNumberOfUnits($value)
     {
         $this->propertyUpdated('NumberOfUnits', $value);
-        if(!isset($this->_data['NumberOfUnits'])){
-            $this->_data['NumberOfUnits'] = new Remote\Collection();
-        }
-        $this->_data['NumberOfUnits'][] = $value;
+        $this->_data['NumberOfUnits'] = $value;
         return $this;
     }
 
@@ -190,6 +181,5 @@ class EarningsLine extends Remote\Object
         $this->_data['FixedAmount'] = $value;
         return $this;
     }
-
 
 }
