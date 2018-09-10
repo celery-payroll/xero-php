@@ -291,14 +291,7 @@ abstract class Application
         }
 
         if (!$object::supportsMethod($method)) {
-                if (!empty($subUri)) {
             throw new Exception(sprintf('%s doesn\'t support [%s] via the API', get_class($object), $method));
-                }
-            } else {
-                $method = $object::supportsMethod(Request::METHOD_PUT) ? Request::METHOD_PUT : Request::METHOD_POST;
-                $uri = $object::getResourceURI();
-                //@todo, bump version so you must create objects with app context.
-                $object->setApplication($this);
         }
 
         //Put in an array with the first level containing only the 'root node'.
